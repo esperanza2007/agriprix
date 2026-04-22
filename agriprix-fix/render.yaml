@@ -6,28 +6,9 @@ services:
     buildCommand: mvn clean package -DskipTests
     startCommand: java -jar target/agriprix-extremenord-1.0.0.jar
     envVars:
-      - key: DB_HOST
-        fromDatabase:
-          name: agriprix-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: agriprix-db
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: agriprix-db
-          property: database
-      - key: DB_USER
-        fromDatabase:
-          name: agriprix-db
-          property: user
-      - key: DB_PASSWORD
-        fromDatabase:
-          name: agriprix-db
-          property: password
-      - key: SPRING_PROFILES_ACTIVE
-        value: production
+      envVars:
+        - key: SPRING_PROFILES_ACTIVE
+          value: production
 databases:
   - name: agriprix-db
     databaseName: agriprix
