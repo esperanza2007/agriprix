@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(content=~{::main}, activeTab='admin', pageTitle='Utilisateurs')}">
+<body>
+<main th:fragment="main">
+
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;">
+        <a th:href="@{/admin}" style="color:#1a9e5f;text-decoration:none;">← Retour</a>
+        <p class="page-title" style="margin:0;">👥 Utilisateurs</p>
+    </div>
+
+    <div style="background:white;border:1px solid #e0e0e0;border-radius:12px;overflow:hidden;">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+            <thead>
+                <tr style="background:#f8f9fa;border-bottom:2px solid #dee2e6;">
+                    <th style="padding:12px 16px;text-align:left;">Nom</th>
+                    <th style="padding:12px 16px;text-align:left;">Téléphone</th>
+                    <th style="padding:12px 16px;text-align:left;">Rôle</th>
+                    <th style="padding:12px 16px;text-align:center;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="u : ${utilisateurs}" style="border-bottom:1px solid #f0f0f0;">
+                    <td style="padding:12px 16px;font-weight:500;" th:text="${u.nom}">Nom</td>
+                    <td style="padding:12px 16px;color:#666;" th:text="${u.telephone}">699...</td>
+                    <td style="padding:12px 16px;">
+                        <span th:text="${u.role}"
+                              th:style="${u.role.name() == 'ADMIN' ? 'color:#dc3545;font-weight:600;' :
+                                         u.role.name() == 'PRODUCTEUR' ? 'color:#1a9e5f;' : 'color:#e67e22;'}">
+                            ROLE
+                        </span>
+                    </td>
+                    <td style="padding:12px 16px;text-align:center;">
+                        <a th:href="@{'/messages/' + ${u.id}}"
+                           style="color:#1a9e5f;text-decoration:none;font-size:13px;">
+                            💬 Envoyer message
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+</body>
+</html>
