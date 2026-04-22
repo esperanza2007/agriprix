@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: agriprix
+    runtime: java
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/agriprix-extremenord-1.0.0.jar
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: agriprix-db
+          property: connectionString
+      - key: DB_USER
+        fromDatabase:
+          name: agriprix-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: agriprix-db
+          property: password
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+
+databases:
+  - name: agriprix-db
+    databaseName: agriprix
+    user: agriuser
+    plan: free

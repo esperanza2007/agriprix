@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription — AgriPrix</title>
+    <link rel="stylesheet" th:href="@{/css/agriprix.css}">
+</head>
+<body>
+<div class="auth-container">
+
+    <div class="auth-logo">
+        <div class="logo-icon">🌾</div>
+        <h1>AgriPrix</h1>
+        <p>Créer un compte</p>
+    </div>
+
+    <div class="auth-card">
+        <h2>Inscription</h2>
+
+        <div th:if="${error}" class="alert alert-error">
+            ❌ <span th:text="${error}">Erreur</span>
+        </div>
+
+        <form th:action="@{/inscription}" th:object="${inscriptionRequest}" method="post">
+
+            <div class="form-group">
+                <label class="form-label" for="nom">👤 Nom complet</label>
+                <input class="form-control" type="text" th:field="*{nom}" id="nom"
+                       placeholder="ex : Amadou Diallo" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="telephone">📱 Numéro de téléphone</label>
+                <input class="form-control" type="text" th:field="*{telephone}" id="telephone"
+                       placeholder="ex : 677123456 (9 chiffres)" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="role">🧑‍🌾 Votre rôle</label>
+                <select class="form-control" th:field="*{role}" id="role" required>
+                    <option value="" disabled>Choisissez votre rôle…</option>
+                    <option value="PRODUCTEUR">🌾 Producteur</option>
+                    <option value="COMMERCANT">🏪 Commerçant</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">🔒 Mot de passe</label>
+                <input class="form-control" type="password" th:field="*{password}" id="password"
+                       placeholder="Minimum 6 caractères" required>
+            </div>
+
+            <button type="submit" class="btn-calculer" style="margin-top:0.5rem;">
+                Créer mon compte
+            </button>
+        </form>
+
+        <p style="text-align:center; margin-top:1.2rem; font-size:0.88rem; color:var(--texte-secondaire);">
+            Déjà un compte ?
+            <a th:href="@{/login}" style="color:var(--vert); font-weight:600;">Se connecter</a>
+        </p>
+    </div>
+
+</div>
+</body>
+</html>

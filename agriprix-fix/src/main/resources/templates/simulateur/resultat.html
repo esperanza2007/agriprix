@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(content=~{::main}, activeTab='simulateur', pageTitle='Résultat')}">
+<body>
+<main th:fragment="main">
+
+    <div class="resultat-header">Résultats estimés</div>
+    <div class="resultat-duree">
+        Simulation sur <strong th:text="${resultat.dureeMois}">4 mois</strong>
+        — <span th:text="${produitNom}">Maïs</span>
+        (<span th:text="${request.quantiteSacs}">10</span> sacs)
+    </div>
+
+    <!-- Layout 2 colonnes sur desktop -->
+    <div class="resultat-layout">
+
+        <!-- Colonne 1 : chiffres détail -->
+        <div>
+            <div class="resultat-ligne">
+                <span class="ligne-label">Investissement total</span>
+                <span class="ligne-valeur" th:text="${resultat.investissementTotal}">150 000 FCFA</span>
+            </div>
+            <div class="resultat-ligne frais-orange">
+                <span class="ligne-label">Frais de stockage</span>
+                <span class="ligne-valeur" th:text="${resultat.fraisStockage}">20 000 FCFA</span>
+            </div>
+
+            <div class="resultat-profit" th:classappend="${' ' + resultat.couleur}">
+                <div class="profit-label" th:text="${resultat.recommandation}">VENDRE MAINTENANT</div>
+                <div class="profit-montant">
+                    <span th:text="${resultat.profitNetBrut >= 0 ? resultat.profitNet : '− ' + resultat.profitNet}">90 000</span>
+                    <span class="devise">FCFA</span>
+                </div>
+                <div>
+                    Rendement (ROI)
+                    <span class="roi-badge"
+                          th:text="${resultat.profitNetBrut >= 0 ? '+ ' + resultat.roi : '− ' + resultat.roi}">
+                        + 52%
+                    </span>
+                </div>
+            </div>
+
+            <div class="resultat-note">
+                ℹ️ <span th:text="${resultat.conseil}">Conseil d'investissement.</span>
+            </div>
+        </div>
+
+        <!-- Colonne 2 : actions -->
+        <div>
+            <div style="background:var(--blanc); border-radius:var(--radius); padding:1.6rem; box-shadow:var(--ombre);">
+                <div style="font-weight:700; margin-bottom:1rem;">Actions</div>
+                <a th:href="@{/simulateur}" class="btn btn-secondary btn-full" style="margin-bottom:0.7rem;">
+                    ← Nouvelle simulation
+                </a>
+                <a th:href="@{/simulateur/historique}" class="btn btn-outline btn-full" style="margin-bottom:0.7rem;">
+                    📋 Voir l'historique
+                </a>
+                <a th:href="@{/}" class="btn btn-primary btn-full">
+                    🏪 Retour au marché
+                </a>
+            </div>
+        </div>
+
+    </div><!-- fin resultat-layout -->
+
+</main>
+</body>
+</html>

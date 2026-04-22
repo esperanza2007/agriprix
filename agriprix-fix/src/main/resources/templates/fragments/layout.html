@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="layout(content, activeTab, pageTitle)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle != null ? pageTitle + ' — AgriPrix' : 'AgriPrix Extrême-Nord'}">AgriPrix</title>
+
+    <!-- PWA -->
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <meta name="theme-color" content="#1a9e5f">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="AgriPrix">
+
+    <link rel="stylesheet" th:href="@{/css/agriprix.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- =====================================================
+     SIDEBAR (desktop uniquement — affichée via CSS)
+     ===================================================== -->
+<aside class="sidebar">
+    <!-- Logo -->
+    <a class="sidebar-logo" th:href="@{/}">
+        <div class="logo-icon">🌾</div>
+        <div class="sidebar-logo-text">
+            AgriPrix
+            <small>Extrême-Nord</small>
+        </div>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+        <div class="sidebar-section-title">Navigation</div>
+
+        <a class="sidebar-link" th:href="@{/}"
+           th:classappend="${activeTab == 'marche' ? ' active' : ''}">
+            <span class="link-icon">🏪</span> Marché
+        </a>
+
+        <a class="sidebar-link" th:href="@{/simulateur}"
+           th:classappend="${activeTab == 'simulateur' ? ' active' : ''}">
+            <span class="link-icon">🧮</span> Simulateur
+        </a>
+
+        <a class="sidebar-link" th:href="@{/simulateur/historique}"
+           th:classappend="${activeTab == 'historique' ? ' active' : ''}">
+            <span class="link-icon">📋</span> Historique
+        </a>
+
+        <sec:authorize access="hasRole('ADMIN')">
+            <div class="sidebar-section-title" style="margin-top:0.5rem;">Administration</div>
+            <a class="sidebar-link" th:href="@{/admin}"
+               th:classappend="${activeTab == 'admin' ? ' active' : ''}">
+                <span class="link-icon">⚙️</span> Tableau de bord
+            </a>
+        </sec:authorize>
+    </nav>
+
+    <!-- Footer sidebar : utilisateur + déconnexion -->
+    <div class="sidebar-footer">
+        <div class="sidebar-user">
+            <div class="sidebar-user-avatar">👤</div>
+            <div class="sidebar-user-name" sec:authentication="name">Utilisateur</div>
+        </div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="sidebar-logout-btn">🚪 Se déconnecter</button>
+        </form>
+    </div>
+</aside>
+
+<!-- =====================================================
+     NAVBAR TOP (mobile uniquement — affichée via CSS)
+     ===================================================== -->
+<nav class="navbar">
+    <a class="navbar-brand" th:href="@{/}">
+        <div class="logo-icon">🌾</div>
+        AgriPrix
+    </a>
+    <div class="navbar-right">
+        <div class="navbar-user">
+            👤 <span sec:authentication="name">Utilisateur</span>
+        </div>
+    </div>
+</nav>
+
+<!-- =====================================================
+     CONTENU PRINCIPAL
+     ===================================================== -->
+<main class="main-content">
+    <th:block th:replace="${content}"></th:block>
+</main>
+
+<!-- =====================================================
+     BOTTOM NAV (mobile uniquement — affichée via CSS)
+     ===================================================== -->
+<nav class="bottom-nav">
+    <a th:href="@{/}" th:class="${activeTab == 'marche' ? 'active' : ''}">
+        <span class="nav-icon">🏪</span>
+        Marché
+    </a>
+    <a th:href="@{/simulateur}" th:class="${activeTab == 'simulateur' ? 'active' : ''}">
+        <span class="nav-icon">🧮</span>
+        Simulateur
+    </a>
+    <a th:href="@{/simulateur/historique}" th:class="${activeTab == 'historique' ? 'active' : ''}">
+        <span class="nav-icon">📋</span>
+        Historique
+    </a>
+    <sec:authorize access="hasRole('ADMIN')">
+        <a th:href="@{/admin}" th:class="${activeTab == 'admin' ? 'active' : ''}">
+            <span class="nav-icon">⚙️</span>
+            Admin
+        </a>
+    </sec:authorize>
+</nav>
+
+<!-- PWA Service Worker -->
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(content=~{::main}, activeTab='historique', pageTitle='Historique')}">
+<body>
+<main th:fragment="main">
+
+    <p class="page-title">📋 Historique</p>
+    <p class="page-subtitle">Vos simulations passées</p>
+
+    <!-- Aucune simulation -->
+    <div th:if="${#lists.isEmpty(simulations)}"
+         style="text-align:center; padding:3rem 1rem; color:var(--texte-secondaire);">
+        <div style="font-size:3rem; margin-bottom:0.5rem;">📋</div>
+        <div style="font-weight:600; margin-bottom:0.5rem;">Aucune simulation pour l'instant.</div>
+        <a th:href="@{/simulateur}" class="btn btn-primary" style="margin-top:1rem;">
+            Faire une simulation
+        </a>
+    </div>
+
+    <!-- MOBILE : cartes -->
+    <div class="historique-list" th:unless="${#lists.isEmpty(simulations)}">
+        <div th:each="sim : ${simulations}" class="historique-card">
+            <div>
+                <div class="historique-produit" th:text="${sim.produit.nom}">Maïs</div>
+                <div class="historique-date"
+                     th:text="${#temporals.format(sim.dateSimulation, 'dd/MM/yyyy HH:mm')}">01/04/2026</div>
+                <div class="historique-date"
+                     th:text="${sim.quantiteSacs + ' sacs — ' + sim.dureeMois + ' mois'}">10 sacs</div>
+            </div>
+            <div class="historique-profit">
+                <div class="montant"
+                     th:text="${(sim.profitNet >= 0 ? '+ ' : '− ') + #numbers.formatDecimal(T(java.lang.Math).abs(sim.profitNet), 0, 'COMMA', 0, 'POINT') + ' FCFA'}">
+                    + 90 000 FCFA
+                </div>
+                <div class="roi-tag"
+                     th:text="${(sim.roi >= 0 ? '+ ' : '− ') + #numbers.formatDecimal(T(java.lang.Math).abs(sim.roi), 1, 2) + '%'}">
+                    + 52%
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DESKTOP : tableau complet -->
+    <div class="historique-table-wrapper" th:unless="${#lists.isEmpty(simulations)}">
+        <div class="admin-card">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Produit</th>
+                        <th>Sacs</th>
+                        <th>Prix achat/sac</th>
+                        <th>Durée</th>
+                        <th>Profit net</th>
+                        <th>ROI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="sim : ${simulations}">
+                        <td th:text="${#temporals.format(sim.dateSimulation, 'dd/MM/yyyy HH:mm')}">01/04/2026</td>
+                        <td th:text="${sim.produit.nom}">Maïs</td>
+                        <td th:text="${sim.quantiteSacs + ' sacs'}">10 sacs</td>
+                        <td th:text="${#numbers.formatDecimal(sim.prixAchatUnitaire, 0, 'COMMA', 0, 'POINT') + ' FCFA'}">15 000 FCFA</td>
+                        <td th:text="${sim.dureeMois + ' mois'}">4 mois</td>
+                        <td>
+                            <span th:text="${(sim.profitNet >= 0 ? '+ ' : '− ') + #numbers.formatDecimal(T(java.lang.Math).abs(sim.profitNet), 0, 'COMMA', 0, 'POINT') + ' FCFA'}">
+                                + 90 000 FCFA
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge-roi"
+                                  th:classappend="${sim.roi >= 0 ? ' positif' : ' negatif'}"
+                                  th:text="${(sim.roi >= 0 ? '+ ' : '− ') + #numbers.formatDecimal(T(java.lang.Math).abs(sim.roi), 1, 2) + '%'}">
+                                + 52%
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="margin-top:1rem;">
+        <a th:href="@{/simulateur}" class="btn btn-primary">🧮 Nouvelle simulation</a>
+    </div>
+
+</main>
+</body>
+</html>

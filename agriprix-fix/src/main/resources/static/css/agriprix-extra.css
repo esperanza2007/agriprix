@@ -1,0 +1,16 @@
+/* Styles supplémentaires pour admin et historique */
+
+.admin-section {
+    background-color: #ecf0f1;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.historique-table {
+    margin-top: 2rem;
+}
+
+.historique-table th {
+    background-color: #34495e;
+    color: white;
+}

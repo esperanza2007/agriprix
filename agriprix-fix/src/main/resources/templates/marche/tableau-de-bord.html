@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(content=~{::main}, activeTab='marche', pageTitle='Marché')}">
+<body>
+<main th:fragment="main">
+
+    <p class="page-title">🏪 Tableau de bord</p>
+    <p class="page-subtitle">Prix du marché — Extrême-Nord, Cameroun</p>
+
+    <div th:each="entry : ${produitsByCategorie}">
+        <p class="section-title" th:text="${entry.key}">Céréales</p>
+        <div class="produits-grid">
+            <a th:each="produit : ${entry.value}"
+               th:href="@{'/produit/' + ${produit.id}}"
+               class="produit-card">
+                <span class="produit-emoji" th:text="${produit.emoji != null ? produit.emoji : '🌿'}">🌽</span>
+                <div class="produit-nom"  th:text="${produit.nom}">Maïs</div>
+                <div class="produit-label">Prix moy. actuel</div>
+                <div class="produit-prix"
+                     th:text="${prixActuels[produit.id] != null ? prixActuels[produit.id] : 'N/A'}">
+                    16 500 FCFA
+                </div>
+            </a>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

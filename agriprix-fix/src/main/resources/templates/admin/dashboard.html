@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(content=~{::main}, activeTab='admin', pageTitle='Administration')}">
+<body>
+<main th:fragment="main">
+
+    <p class="section-title">Administration</p>
+
+    <div class="admin-card">
+        <h2>📦 Produits enregistrés</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Icône</th>
+                    <th>Nom</th>
+                    <th>Catégorie</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="produit : ${produits}">
+                    <td th:text="${produit.emoji}">🌽</td>
+                    <td th:text="${produit.nom}">Maïs</td>
+                    <td th:text="${produit.categorie}">Céréales</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+</body>
+</html>

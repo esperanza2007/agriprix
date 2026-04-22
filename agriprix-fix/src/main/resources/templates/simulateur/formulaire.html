@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(content=~{::main}, activeTab='simulateur', pageTitle='Simulateur')}">
+<body>
+<main th:fragment="main">
+
+    <div class="sim-header">
+        <div class="sim-header-icon">🧮</div>
+        <div>
+            <div class="sim-header-title">Calculateur de Profit</div>
+            <div class="sim-header-desc">Estimez vos gains après stockage</div>
+        </div>
+    </div>
+
+    <form th:action="@{/simulateur}" th:object="${simulationRequest}" method="post">
+        <div class="form-card">
+            <!-- En desktop, les champs s'organisent en 2 colonnes via .form-grid -->
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label class="form-label" for="produitId">Produit</label>
+                    <select class="form-control" th:field="*{produitId}" id="produitId" required>
+                        <option value="" disabled>Choisissez un produit…</option>
+                        <option th:each="produit : ${produits}"
+                                th:value="${produit.id}"
+                                th:text="${produit.emoji + ' ' + produit.nom}">Maïs</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="quantiteSacs">Quantité à stocker (Sacs)</label>
+                    <input class="form-control" type="number"
+                           th:field="*{quantiteSacs}" id="quantiteSacs"
+                           placeholder="ex : 10" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="prixAchatUnitaire">Prix d'achat unitaire (FCFA/sac)</label>
+                    <input class="form-control" type="number"
+                           th:field="*{prixAchatUnitaire}" id="prixAchatUnitaire"
+                           placeholder="ex : 15 000" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="fraisStockageMensuel">Frais de stockage (FCFA/sac/mois)</label>
+                    <input class="form-control" type="number"
+                           th:field="*{fraisStockageMensuel}" id="fraisStockageMensuel"
+                           placeholder="ex : 500" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="dureeMois">Durée de stockage (mois)</label>
+                    <input class="form-control" type="number"
+                           th:field="*{dureeMois}" id="dureeMois"
+                           placeholder="ex : 4" min="1" max="24" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="prixVenteEstime">Prix de vente estimé (FCFA/sac)</label>
+                    <input class="form-control" type="number"
+                           th:field="*{prixVenteEstime}" id="prixVenteEstime"
+                           placeholder="ex : 26 000" min="0" required>
+                </div>
+
+            </div><!-- fin form-grid -->
+        </div>
+
+        <button type="submit" class="btn-calculer">📊 Calculer mon profit</button>
+    </form>
+
+</main>
+</body>
+</html>

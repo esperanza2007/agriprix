@@ -1,0 +1,759 @@
+/* =========================================================
+   AgriPrix — CSS Responsive : Mobile (PWA) + Desktop
+   ========================================================= */
+
+:root {
+    --vert:            #1a9e5f;
+    --vert-clair:      #e8f7ef;
+    --vert-dark:       #158a52;
+    --jaune:           #e6a817;
+    --jaune-clair:     #fef6e4;
+    --rouge:           #e03c31;
+    --rouge-clair:     #fdecea;
+    --gris-bg:         #f5f6fa;
+    --gris-sidebar:    #1a1a2e;
+    --gris-sidebar-2:  #252545;
+    --blanc:           #ffffff;
+    --texte:           #1a1a2e;
+    --texte-secondaire:#6b7280;
+    --bordure:         #e8eaf0;
+    --ombre:           0 2px 12px rgba(0,0,0,0.08);
+    --ombre-md:        0 4px 20px rgba(0,0,0,0.12);
+    --radius:          14px;
+    --radius-sm:       8px;
+    --sidebar-width:   240px;
+    --navbar-height:   64px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: var(--gris-bg);
+    color: var(--texte);
+    min-height: 100vh;
+}
+
+/* =========================================================
+   LAYOUT MOBILE (défaut) : navbar top + bottom-nav
+   ========================================================= */
+
+/* --- Sidebar : cachée sur mobile --- */
+.sidebar { display: none; }
+
+/* --- Navbar top (mobile) --- */
+.navbar {
+    background: var(--blanc);
+    border-bottom: 1px solid var(--bordure);
+    padding: 0 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--navbar-height);
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--texte);
+    text-decoration: none;
+}
+
+.navbar-brand .logo-icon {
+    background: var(--vert);
+    color: white;
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--gris-bg);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.navbar-logout {
+    background: none;
+    border: 1.5px solid var(--bordure);
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: var(--texte-secondaire);
+    text-decoration: none;
+    display: none; /* masqué sur mobile */
+}
+.navbar-logout:hover { background: var(--gris-bg); }
+
+/* --- Bottom nav (mobile uniquement) --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--blanc);
+    border-top: 1px solid var(--bordure);
+    display: flex;
+    justify-content: space-around;
+    padding: 6px 0 10px;
+    z-index: 200;
+}
+
+.bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    text-decoration: none;
+    color: var(--texte-secondaire);
+    font-size: 0.68rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.bottom-nav a.active,
+.bottom-nav a:hover { color: var(--vert); }
+
+.bottom-nav .nav-icon { font-size: 1.3rem; line-height: 1; }
+
+/* --- Contenu principal (mobile) --- */
+.main-content {
+    padding: 1.2rem 1rem 90px; /* espace pour bottom-nav */
+    max-width: 100%;
+}
+
+/* =========================================================
+   LAYOUT DESKTOP (≥ 900px) : sidebar fixe + contenu
+   ========================================================= */
+@media (min-width: 900px) {
+
+    /* Masquer la navbar top et le bottom-nav */
+    .navbar     { display: none; }
+    .bottom-nav { display: none; }
+
+    /* Afficher la sidebar */
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        width: var(--sidebar-width);
+        background: var(--gris-sidebar);
+        color: white;
+        z-index: 300;
+        padding: 0;
+        overflow-y: auto;
+    }
+
+    .sidebar-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 1.6rem 1.4rem 1.2rem;
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: white;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .sidebar-logo .logo-icon {
+        background: var(--vert);
+        width: 40px; height: 40px;
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.3rem;
+        flex-shrink: 0;
+    }
+
+    .sidebar-logo-text { line-height: 1.2; }
+    .sidebar-logo-text small {
+        display: block;
+        font-size: 0.65rem;
+        font-weight: 400;
+        opacity: 0.5;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
+
+    .sidebar-nav {
+        flex: 1;
+        padding: 1rem 0.8rem;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .sidebar-section-title {
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        color: rgba(255,255,255,0.35);
+        padding: 0.8rem 0.6rem 0.3rem;
+    }
+
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: rgba(255,255,255,0.65);
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.15s;
+    }
+
+    .sidebar-link:hover {
+        background: rgba(255,255,255,0.07);
+        color: white;
+    }
+
+    .sidebar-link.active {
+        background: var(--vert);
+        color: white;
+    }
+
+    .sidebar-link .link-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+    .sidebar-footer {
+        padding: 1rem;
+        border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .sidebar-user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        background: rgba(255,255,255,0.07);
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .sidebar-user-avatar {
+        width: 34px; height: 34px;
+        background: var(--vert);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .sidebar-user-name {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: white;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .sidebar-logout-btn {
+        display: block;
+        width: 100%;
+        padding: 9px;
+        background: rgba(255,255,255,0.07);
+        border: none;
+        border-radius: 8px;
+        color: rgba(255,255,255,0.6);
+        font-size: 0.82rem;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: background 0.15s;
+    }
+    .sidebar-logout-btn:hover { background: rgba(255,255,255,0.14); color: white; }
+
+    /* Décaler le contenu principal */
+    .main-content {
+        margin-left: var(--sidebar-width);
+        padding: 2rem 2.5rem;
+        max-width: none;
+    }
+
+    /* ---- Layout desktop : grilles plus larges ---- */
+    .produits-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Sur desktop, la page détail a une mise en page 2 colonnes */
+    .detail-layout {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 1.5rem;
+        align-items: start;
+    }
+
+    /* Formulaire simulateur en 2 colonnes */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 1.2rem;
+    }
+
+    /* Page résultat : layout côte-à-côte */
+    .resultat-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        align-items: start;
+    }
+
+    /* Historique en tableau complet */
+    .historique-list { display: none; }
+    .historique-table-wrapper { display: block; }
+}
+
+/* =========================================================
+   COMPOSANTS (partagés mobile + desktop)
+   ========================================================= */
+
+/* --- Grille produits --- */
+.produits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 1.5rem;
+}
+
+.produit-card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 1.2rem 1rem;
+    box-shadow: var(--ombre);
+    text-decoration: none;
+    color: var(--texte);
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: block;
+}
+
+.produit-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ombre-md);
+}
+
+.produit-emoji { font-size: 2.4rem; margin-bottom: 0.5rem; display: block; }
+.produit-nom   { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+.produit-label { font-size: 0.75rem; color: var(--texte-secondaire); margin-bottom: 4px; }
+.produit-prix  { font-size: 1.05rem; font-weight: 700; color: var(--vert); }
+
+/* --- Titre de section --- */
+.section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--texte-secondaire);
+    margin: 1.5rem 0 0.8rem;
+}
+
+.page-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 0.3rem;
+}
+
+.page-subtitle {
+    font-size: 0.85rem;
+    color: var(--texte-secondaire);
+    margin-bottom: 1.5rem;
+}
+
+/* --- Détail produit --- */
+.detail-header {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--ombre);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.detail-emoji         { font-size: 3rem; }
+.detail-prix-actuel   { font-size: 1.8rem; font-weight: 800; color: var(--vert); }
+.detail-prix-label    { font-size: 0.8rem; color: var(--texte-secondaire); }
+.detail-categorie     { font-size: 0.78rem; color: var(--texte-secondaire); margin-top: 4px; }
+
+/* Sélecteur de période */
+.periode-selector {
+    display: flex;
+    background: var(--gris-bg);
+    border-radius: 8px;
+    padding: 3px;
+    width: fit-content;
+    margin-left: auto;
+}
+
+.periode-selector button {
+    padding: 5px 14px;
+    border: none; background: transparent;
+    border-radius: 6px; font-size: 0.8rem;
+    cursor: pointer; font-weight: 500;
+    color: var(--texte-secondaire);
+    transition: all 0.2s;
+}
+
+.periode-selector button.active {
+    background: var(--blanc);
+    color: var(--texte);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* Carte graphique */
+.chart-card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+    box-shadow: var(--ombre);
+    margin-bottom: 1rem;
+}
+
+.chart-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.chart-card-title    { font-size: 1rem; font-weight: 700; }
+.chart-card-subtitle { font-size: 0.75rem; color: var(--texte-secondaire); }
+
+/* Carte état du marché */
+.marche-etat-card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+    box-shadow: var(--ombre);
+    margin-bottom: 1rem;
+}
+
+.marche-etat-title {
+    font-size: 1rem; font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 6px;
+}
+
+.recommandation-badge {
+    width: 100%;
+    padding: 14px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.recommandation-badge .badge-label {
+    font-size: 0.62rem; letter-spacing: 1px;
+    text-transform: uppercase; opacity: 0.75;
+    display: block; margin-bottom: 2px;
+}
+
+.recommandation-badge .badge-text { font-size: 1.1rem; font-weight: 800; }
+
+.recommandation-badge.vert  { background: var(--vert-clair);  color: var(--vert); }
+.recommandation-badge.jaune { background: var(--jaune-clair); color: var(--jaune); }
+.recommandation-badge.rouge { background: var(--rouge-clair); color: var(--rouge); }
+
+/* Zones de couleur */
+.zone-list { list-style: none; }
+.zone-item {
+    display: flex; align-items: flex-start;
+    gap: 10px; padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+.zone-item:last-child { border-bottom: none; }
+.zone-dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 3px; flex-shrink: 0; }
+.zone-dot.vert  { background: var(--vert); }
+.zone-dot.jaune { background: var(--jaune); }
+.zone-dot.rouge { background: var(--rouge); }
+.zone-label { font-weight: 600; font-size: 0.9rem; }
+.zone-desc  { font-size: 0.78rem; color: var(--texte-secondaire); }
+
+/* Bouton simuler */
+.btn-simuler {
+    background: var(--texte); color: var(--blanc);
+    width: 100%; padding: 16px;
+    border: none; border-radius: var(--radius);
+    font-size: 1rem; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    display: flex; align-items: center;
+    justify-content: center; gap: 8px;
+    margin-top: 1rem; transition: background 0.2s;
+}
+.btn-simuler:hover { background: #2d3748; }
+
+/* --- Formulaire simulateur --- */
+.sim-header {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 1.4rem; margin-bottom: 1.2rem;
+    box-shadow: var(--ombre);
+    display: flex; align-items: center; gap: 1rem;
+}
+
+.sim-header-icon {
+    background: var(--vert); color: var(--blanc);
+    width: 50px; height: 50px; border-radius: 12px;
+    font-size: 1.6rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+
+.sim-header-title { font-size: 1.2rem; font-weight: 700; }
+.sim-header-desc  { font-size: 0.82rem; color: var(--texte-secondaire); }
+
+.form-card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 1.6rem;
+    box-shadow: var(--ombre);
+    margin-bottom: 1rem;
+}
+
+.form-group { margin-bottom: 1.1rem; }
+
+.form-label {
+    display: block; font-size: 0.85rem;
+    font-weight: 600; margin-bottom: 6px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--bordure);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    background: var(--gris-bg);
+    color: var(--texte);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.form-control:focus {
+    border-color: var(--vert);
+    background: var(--blanc);
+}
+
+.btn-calculer {
+    background: var(--vert); color: var(--blanc);
+    width: 100%; padding: 14px;
+    border: none; border-radius: var(--radius);
+    font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: background 0.2s;
+    margin-top: 0.5rem;
+}
+.btn-calculer:hover { background: var(--vert-dark); }
+
+/* --- Page résultat --- */
+.resultat-header {
+    text-align: center; padding: 1rem 0 0.4rem;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--texte-secondaire);
+}
+
+.resultat-duree {
+    text-align: center; font-size: 0.85rem;
+    color: var(--texte-secondaire); margin-bottom: 1rem;
+}
+
+.resultat-ligne {
+    background: var(--blanc);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px; margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: var(--ombre); font-size: 0.92rem;
+}
+
+.resultat-ligne .ligne-label  { color: var(--texte-secondaire); }
+.resultat-ligne .ligne-valeur { font-weight: 700; }
+.resultat-ligne.frais-orange  { border-left: 4px solid var(--jaune); }
+
+.resultat-profit {
+    border-radius: var(--radius);
+    padding: 1.6rem; margin: 1rem 0;
+    color: var(--blanc);
+}
+.resultat-profit.vert  { background: var(--vert); }
+.resultat-profit.jaune { background: var(--jaune); }
+.resultat-profit.rouge { background: var(--rouge); }
+
+.profit-label {
+    font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase; opacity: 0.85;
+}
+
+.profit-montant {
+    font-size: 2.4rem; font-weight: 800;
+    margin: 4px 0;
+    display: flex; align-items: baseline; gap: 8px;
+}
+
+.profit-montant .devise { font-size: 1rem; font-weight: 600; opacity: 0.85; }
+
+.roi-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.25);
+    border-radius: 20px; padding: 3px 12px;
+    font-size: 0.9rem; font-weight: 700;
+}
+
+.resultat-note {
+    font-size: 0.78rem; color: var(--texte-secondaire);
+    margin-top: 0.5rem;
+    display: flex; align-items: flex-start; gap: 6px;
+}
+
+/* --- Boutons généraux --- */
+.btn {
+    display: inline-flex;
+    align-items: center; justify-content: center; gap: 6px;
+    padding: 11px 20px; border-radius: var(--radius-sm);
+    font-size: 0.88rem; font-weight: 600;
+    text-decoration: none; cursor: pointer;
+    border: none; transition: opacity 0.2s, transform 0.15s;
+}
+.btn:hover { opacity: 0.87; }
+.btn-primary   { background: var(--vert);    color: var(--blanc); }
+.btn-secondary { background: var(--gris-bg); color: var(--texte); }
+.btn-outline   { background: transparent; border: 1.5px solid var(--vert); color: var(--vert); }
+.btn-full      { width: 100%; }
+
+/* --- Auth (login / inscription) --- */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gris-bg);
+    padding: 1.5rem;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-logo {
+    text-align: center;
+    margin-bottom: 1.8rem;
+}
+
+.auth-logo .logo-icon {
+    background: var(--vert); color: white;
+    width: 60px; height: 60px; border-radius: 18px;
+    display: inline-flex; align-items: center;
+    justify-content: center; font-size: 2rem;
+    margin-bottom: 0.6rem;
+    box-shadow: 0 4px 16px rgba(26,158,95,0.35);
+}
+
+.auth-logo h1 { font-size: 1.6rem; font-weight: 800; }
+.auth-logo p  { color: var(--texte-secondaire); font-size: 0.85rem; }
+
+.auth-card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--ombre-md);
+}
+
+.auth-card h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 1.4rem; }
+
+/* --- Alertes --- */
+.alert {
+    padding: 11px 14px; border-radius: var(--radius-sm);
+    margin-bottom: 1rem; font-size: 0.86rem;
+    display: flex; align-items: center; gap: 8px;
+}
+.alert-error   { background: var(--rouge-clair); color: var(--rouge); }
+.alert-success { background: var(--vert-clair);  color: var(--vert); }
+
+/* --- Historique --- */
+.historique-card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 1rem; box-shadow: var(--ombre);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 1rem;
+}
+
+.historique-produit { font-weight: 700; font-size: 0.95rem; }
+.historique-date    { font-size: 0.75rem; color: var(--texte-secondaire); }
+.historique-profit  { margin-left: auto; text-align: right; }
+.historique-profit .montant { font-weight: 700; }
+.historique-profit .roi-tag {
+    font-size: 0.7rem;
+    background: var(--vert-clair); color: var(--vert);
+    border-radius: 10px; padding: 2px 8px;
+}
+
+/* tableau desktop historique */
+.historique-table-wrapper { display: none; }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.data-table th {
+    background: var(--gris-bg); padding: 10px 14px;
+    text-align: left; font-weight: 600;
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--texte-secondaire);
+}
+.data-table td { padding: 12px 14px; border-bottom: 1px solid #f0f2f5; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #fafafa; }
+
+/* --- Admin --- */
+.admin-card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 1.6rem; box-shadow: var(--ombre);
+    margin-bottom: 1.2rem;
+}
+.admin-card h2 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+
+/* --- Badges ROI colorés dans tableaux --- */
+.badge-roi {
+    display: inline-block;
+    padding: 2px 10px; border-radius: 12px;
+    font-size: 0.78rem; font-weight: 700;
+}
+.badge-roi.positif { background: var(--vert-clair);  color: var(--vert); }
+.badge-roi.negatif { background: var(--rouge-clair); color: var(--rouge); }
+
+/* =========================================================
+   PWA — manifest & meta (déclaratif dans le HTML)
+   ========================================================= */
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Tablette intermédiaire : 600px - 900px */
+@media (min-width: 600px) and (max-width: 899px) {
+    .produits-grid { grid-template-columns: repeat(3, 1fr); }
+    .main-content { padding: 1.5rem 1.5rem 90px; }
+}

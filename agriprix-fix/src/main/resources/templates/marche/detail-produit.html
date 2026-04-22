@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(content=~{::main}, activeTab='marche', pageTitle=${produit.nom})}">
+<body>
+<main th:fragment="main">
+
+    <!-- En-tête produit -->
+    <div class="detail-header">
+        <span class="detail-emoji" th:text="${produit.emoji != null ? produit.emoji : '🌿'}">🌽</span>
+        <div style="flex:1">
+            <div class="detail-prix-label">Prix actuel — sac de 100kg</div>
+            <div class="detail-prix-actuel"
+                 th:text="${latestPrix != null ? #numbers.formatDecimal(latestPrix.prix, 0, 'COMMA', 0, 'POINT') + ' FCFA' : 'N/A'}">
+                16 500 FCFA
+            </div>
+            <div class="detail-categorie" th:text="${produit.categorie}">Céréales</div>
+        </div>
+        <!-- Retour sur desktop -->
+        <a th:href="@{/}" class="btn btn-secondary" style="flex-shrink:0">← Retour</a>
+    </div>
+
+    <!-- Layout desktop : 2 colonnes -->
+    <div class="detail-layout">
+
+        <!-- Colonne gauche : graphique -->
+        <div>
+            <div class="chart-card">
+                <div class="chart-card-header">
+                    <div>
+                        <div class="chart-card-title">
+                            <span th:text="${produit.emoji}">🌽</span>
+                            Évolution : <span th:text="${produit.nom}">Maïs</span>
+                        </div>
+                        <div class="chart-card-subtitle">Prix par sac de 100kg (FCFA)</div>
+                    </div>
+                    <div class="periode-selector">
+                        <button class="active" onclick="changerPeriode(12, this)">12 Mois</button>
+                        <button onclick="changerPeriode(0, this)">Tout</button>
+                    </div>
+                </div>
+                <canvas id="chartPrix" height="140"></canvas>
+            </div>
+        </div>
+
+        <!-- Colonne droite : état du marché -->
+        <div>
+            <div class="marche-etat-card">
+                <div class="marche-etat-title">📶 État du Marché</div>
+
+                <div class="recommandation-badge"
+                     th:classappend="${zone == 'vert' ? ' vert' : (zone == 'rouge' ? ' rouge' : ' jaune')}">
+                    <span class="badge-label">Recommandation</span>
+                    <span class="badge-text"
+                          th:text="${zone == 'vert' ? 'STOCKER / ACHETER' : (zone == 'rouge' ? 'VENDRE MAINTENANT' : 'OBSERVER')}">
+                        STOCKER / ACHETER
+                    </span>
+                </div>
+
+                <ul class="zone-list">
+                    <li class="zone-item">
+                        <div class="zone-dot vert"></div>
+                        <div>
+                            <div class="zone-label">Zone de Stockage (Vert)</div>
+                            <div class="zone-desc">Oct — Jan : Prix au plus bas.</div>
+                        </div>
+                    </li>
+                    <li class="zone-item">
+                        <div class="zone-dot jaune"></div>
+                        <div>
+                            <div class="zone-label">Zone de Transition (Jaune)</div>
+                            <div class="zone-desc">Fév — Avr : Attente stratégique.</div>
+                        </div>
+                    </li>
+                    <li class="zone-item">
+                        <div class="zone-dot rouge"></div>
+                        <div>
+                            <div class="zone-label">Zone de Vente (Rouge)</div>
+                            <div class="zone-desc">Mai — Juil : Période de soudure.</div>
+                        </div>
+                    </li>
+                </ul>
+
+                <a th:href="@{/simulateur}" class="btn-simuler">🧮 Simuler un stockage</a>
+            </div>
+        </div>
+
+    </div><!-- fin detail-layout -->
+
+    <!-- Script graphique -->
+    <script th:inline="javascript">
+        const produitId = /*[[${produit.id}]]*/ 1;
+        let chartInstance = null;
+        let tousLesPrix = [];
+
+        async function chargerDonnees() {
+            try {
+                const resp = await fetch('/api/produit/' + produitId + '/prix');
+                tousLesPrix = await resp.json();
+                afficherChart(tousLesPrix.slice(-12));
+            } catch(e) { console.error('Erreur chargement prix', e); }
+        }
+
+        function changerPeriode(mois, btn) {
+            document.querySelectorAll('.periode-selector button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            afficherChart(mois > 0 ? tousLesPrix.slice(-mois) : tousLesPrix);
+        }
+
+        function afficherChart(donnees) {
+            if (!donnees.length) return;
+            const labels  = donnees.map(d => new Date(d.date).toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }));
+            const valeurs = donnees.map(d => d.prix);
+
+            if (chartInstance) chartInstance.destroy();
+            const ctx      = document.getElementById('chartPrix').getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 280);
+            gradient.addColorStop(0, 'rgba(26,158,95,0.30)');
+            gradient.addColorStop(1, 'rgba(26,158,95,0.01)');
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: { labels, datasets: [{
+                    data: valeurs,
+                    borderColor: '#1a9e5f',
+                    backgroundColor: gradient,
+                    borderWidth: 2.5,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#1a9e5f',
+                    fill: true, tension: 0.4
+                }]},
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { ticks: { callback: v => v.toLocaleString('fr-FR') + ' F' }, grid: { color: 'rgba(0,0,0,0.05)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', chargerDonnees);
+    </script>
+
+</main>
+</body>
+</html>
