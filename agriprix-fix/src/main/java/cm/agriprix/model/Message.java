@@ -10,7 +10,7 @@ public class Message {
     private Long id;
 
     @ManyToOne
-    @ManyToOne
+
     @JoinColumn(name = "expediteur_id")
     private Utilisateur expediteur;
 
