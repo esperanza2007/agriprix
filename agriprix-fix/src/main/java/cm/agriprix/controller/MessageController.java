@@ -96,7 +96,7 @@ public class MessageController {
     /** Nouveau message (démarrer une conversation) */
     @GetMapping("/nouveau/{userId}")
     public String nouveau(@PathVariable Long userId, Model model, Principal principal) {
-        Utilisateur moi = utilisateurService.getCurrentUser (principal.getName());
+        Utilisateur moi = utilisateurService.getCurrentUser(principal.getName());
         Utilisateur destinataire = utilisateurRepository.findById(userId).orElse(null);
         if (destinataire == null) return "error";
         return "redirect:/messages/" + userId;
